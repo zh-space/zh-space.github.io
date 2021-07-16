@@ -8,7 +8,7 @@
   --color-border: #eee;
   --background-image: url("/images/theme/welcome-image.jpg");
   --loading-image: url("/images/theme/loading.gif");
-  --lazyload-image: url("/images/theme/loading.gif");
+  --lazyload-image: url("/images/theme/hello.jpg");
 }
 @media (prefers-color-scheme: dark) {
   :root {
