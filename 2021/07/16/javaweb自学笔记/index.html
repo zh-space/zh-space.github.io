@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>javaweb自学笔记 - 老段</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="自学前篇因为自己实训的时候选的微信小程序，没有选择ja...">
+  <meta name="author" content="hao Zhou">
+  <link rel="icon" href="/images/icons/giao.jpg" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/giao.jpg" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/giao.jpg" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/giao.jpg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/giao.jpg">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_r673sha78lq.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: '[object Object]'
+      },
+      donate: {
+        enable: true,
+        alipay: 'https://i.loli.net/2021/07/17/GdAvrzyJcuw5R9s.jpg',
+        wechat: 'https://i.loli.net/2021/07/17/vUju6Mot8IKgYm9.png'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: true
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'url',
+        image: 'https://i.loli.net/2021/07/17/SxQngtePb7uZFKf.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">javaweb自学笔记</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/galleries/ " class="underline "> 摄影</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  z-space</p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="https://i.loli.net/2021/07/16/GW8wMeL7xqdAghz.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">javaweb自学笔记</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>七月 16, 2021</span>
+      
+        <span class="post-info-item">
+          <i class="iconfont iconeye"></i><span id="/2021/07/16/javaweb%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" class="leancloud" data-flag-title="javaweb自学笔记"></span>
+        </span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4791</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        <h2 id="自学前篇"><a href="#自学前篇" class="headerlink" title="自学前篇"></a>自学前篇</h2><p>因为自己实训的时候选的微信小程序，没有选择javaweb，有点后悔，因为感觉微信小程序比较简单，而javaweb能学到更多东西。所以自己暑假准备自学javaweb并且做个项目出来。首先当然是看b站的教学视频啦，有老师教还是比自己自学快的。这篇文章就和大家分享我的自学过程，还有笔记。</p>
+<h2 id="javascript的表单"><a href="#javascript的表单" class="headerlink" title="javascript的表单"></a>javascript的表单</h2><p>form标签是表单标签<br>  action属性设置提交的服务器地址<br>  method属性设置提交的方式get/post<br>表单提交的时候，数据没有发送给服务器的三种情况<br>  1.表单没有name属性值<br>  2.单选复选（下拉列表的option标签都需要添加value属性，以便发送给服务器）<br>  3.表单项不在提交的form标签中<br>POST的特点：<br>  提交数据大小理论上没有要求<br>  数据类型没有要求<br>  安全性更高<br>  响应速度稍慢<br>GET的特点：<br>  响应速度快<br>  只能是字符串<br>  数据在请求头中安全性较低<br>  GET能传递的数据字节短</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;form action=&quot;http://locationhost:8080&quot; method=&quot;GET&quot;&gt;<br>        &lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;login&quot;/&gt;<br>        &lt;table&gt;<br>            &lt;tr&gt;<br>                &lt;td&gt;用户名称：&lt;/td&gt;<br>                &lt;td&gt;<br>                    &lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;默认值&quot;/&gt;&lt;/td&gt;<br>            &lt;/tr&gt;<br>            &lt;tr&gt;<br>                &lt;td&gt;用户密码：&lt;/td&gt;<br>                &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;password&quot; value=&quot;&quot;/&gt;&lt;/td&gt;<br>            &lt;/tr&gt;<br>        &lt;/table&gt;<br>    &lt;/form&gt;<br></code></pre></td></tr></table></figure>
+<h2 id="javascript的运算符和java有些不同"><a href="#javascript的运算符和java有些不同" class="headerlink" title="javascript的运算符和java有些不同"></a>javascript的运算符和java有些不同</h2><p>&amp;&amp;且运算<br>  有两种情况：<br>  第一种：当表达式全为真的时候，返回最后一个表达式的值<br>  第二种：当表达式中有一个为假的时候，返回第一个为假的表达式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">var a=&quot;abc&quot;;<br>var b=true;<br>var c=false;<br>var d=null;<br>//alert(a &amp;&amp; b);  true<br>//alert(b &amp;&amp; a);  true<br>//alert(a &amp;&amp; d);  false<br>//alert(a &amp;&amp; c);  null<br>//alert(a &amp;&amp; d &amp;&amp; c);  false<br></code></pre></td></tr></table></figure>
+<p>||且运算<br>  有两种情况：<br>  第一种：当表达式全为假的时候，返回最后一个表达式的值<br>  第二种：当表达式中有一个为真的时候，返回第一个为真的表达式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">var a=&quot;abc&quot;;<br>var b=true;<br>var c=false;<br>var d=null;<br>//alert(d || c);  null<br>//alert(c || d);  false<br>//alert(a || c);  abc<br>//alert(b || c);  true<br></code></pre></td></tr></table></figure>
+<h2 id="javascript的数组和python的数组很相似，略过。"><a href="#javascript的数组和python的数组很相似，略过。" class="headerlink" title="javascript的数组和python的数组很相似，略过。"></a>javascript的数组和python的数组很相似，略过。</h2><p>略</p>
+<h2 id="javascrpit定义函数的两种方式"><a href="#javascrpit定义函数的两种方式" class="headerlink" title="javascrpit定义函数的两种方式"></a>javascrpit定义函数的两种方式</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function giao()&#123;<br>        alert(&quot;giao&quot;)<br>    &#125;<br>    var giaogiao=function()&#123;<br>        alert(&quot;giaogiao&quot;)<br>    &#125;<br>    giao();<br>    giaogiao();<br></code></pre></td></tr></table></figure>
+<p>另外因为js是弱类语言，所以要定义有参函数在小括号里面(a,b)就可以了和python一样.</p>
+<h2 id="js不支持重载"><a href="#js不支持重载" class="headerlink" title="js不支持重载"></a>js不支持重载</h2><h2 id="函数的arguments隐形参数（仅在function内）"><a href="#函数的arguments隐形参数（仅在function内）" class="headerlink" title="函数的arguments隐形参数（仅在function内）"></a>函数的arguments隐形参数（仅在function内）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">function fun(a)&#123;<br>        var result=0;<br>        alert(arguments.length);<br>        alert(arguments[0]);<br>        alert(arguments[1]);<br>        alert(arguments[2]);<br>        alert(&quot;a=&quot;+a)<br>        for (var i=0;i&lt;arguments.length;i++)&#123;<br>            result+=arguments[i];<br>        &#125;<br>        return result<br>    &#125;<br>fun(1,2,3,4,5,6,7,8,9)<br></code></pre></td></tr></table></figure>
+<h2 id="javascript的自定义对象"><a href="#javascript的自定义对象" class="headerlink" title="javascript的自定义对象"></a>javascript的自定义对象</h2><p>对象的定义:<br>  var 变量名 = new Object(); //对象实例（空对象）<br>  变量名.属性名 = 值；        //定义一个属性<br>  变量名.函数 = function(){} //定义一个函数<br>对象的访问:<br>  变量名.属性/函数名();</p>
+<p>对象的定义:<br>  var 变量名 = {<br>      属性名: 值，<br>      属性名: 值，<br>      函数名: function(){}<br>  }；<br>对象的访问:<br>  变量名.属性/函数名();</p>
+<h2 id="javascript中的事件"><a href="#javascript中的事件" class="headerlink" title="javascript中的事件"></a>javascript中的事件</h2><p>常用的事件:<br>  onload 加载完成事件        页面加载完成之后，常用于做页面js代码初始化操作<br>  onclick 单击事件          常用于按钮的点击响应操作<br>  onblur 失去焦点事件        常用于输入框失去焦点后验证其输入内容是否合法<br>  onchange 内容发送改变事件  常用于下拉列表和输入框内容发生改变后操作<br>  onsubmit 表单提交事件      常用于表单提交前，验证所有表单项是否合法</p>
+<h2 id="javascript静态注册与动态注册"><a href="#javascript静态注册与动态注册" class="headerlink" title="javascript静态注册与动态注册"></a>javascript静态注册与动态注册</h2><p>onload事件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script type=&quot;text/javascript&quot;&gt;<br>  // onLoad事件的方法<br>  function onloadFun() &#123;<br>      alert(&#x27;静态注册onload事件，所有代码&quot;);<br>      &#125;<br>      // onLoad事件动态注册。是固定写法<br>      window.onload = function ()&#123;<br>          alert(&quot;动态注册的onload事件&quot;);<br>      &#125;<br>&lt;/script&gt;<br>&lt;!--静态注册onload事件<br>onLoad事件是浏览器解析完页面之后就会自动触发的事件<br>&lt;body onload=&quot;onLoadFun( ); &quot;&gt; <br>--&gt;<br></code></pre></td></tr></table></figure>
+<p>onclick事件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;html lang=&quot;en&quot;&gt;<br>&lt;head&gt;<br>&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;title&gt;Title&lt;/title&gt;<br>&lt;script type=&quot;text/javascript&quot;&gt;<br>function onclickFun() &#123;<br>    alert(&quot;静态注册onclick事件&quot;);<br>    &#125;<br>    //动态注册onclick事件<br>    window.onload = function ()<br>    //1获取标签对象<br>    /*<br>    * document是JavaScript语言提供的一个对象（文档)&lt;br/&gt;<br>    * get    获取<br>    * ELement 元亲（就是标签）<br>    *By   通过。。由。。经。e :<br>    * Id   id层性<br>    getELementById通过id层性获取标签对翻**/<br>    var btn = document.getElementById(&quot;giao&quot;);<br>    btn.onclick = funtion()&#123;<br>        alert(&quot;动态注册onclick事件&quot;)<br>    &#125;<br>    //2通过标签对象.事件名= function()&#123;&#125;<br>    &#125;<br>    &lt;/script&gt;<br>&lt;/head&gt;<br>&lt;body&gt;<br>    &lt;!--静态注册onclick事件--&gt;<br>    &lt;button onclick=&quot;onclickkFun()&quot;&gt;静态注册&lt;/button&gt;<br>    &lt;!--动态注册onclick事件--&gt;<br>    &lt;button id=&quot;giao&quot;&gt;动态注册&lt;/button&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+<p>onblur onchange onsubmit事件类似这里不多讲.</p>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>表示要求字符串中，是否包含字母e<br>var patt = new RegExp(“e”);<br>var patt = /e/; 也是正则表达式对象<br>表示要求字符串中，是否包含字母a或b或c<br>var patt = / [abc] / ;<br>表示要求字符串，是否包含小写字母<br>var patt = / [a-z]/ ;<br>表示要求字符串，是否包含任意大写字母<br>var patt = /[A-Z]/ ;<br>表示要求字符串，是否包含任意数字<br>var patt = / [0-9] / ;<br>表示要求字符串，是否包含字母，数字，下划线<br>var patt = /\w/ ;<br>表示要求字符串中是否包含至少―个a<br>var patt = /a+/ ;<br>表示要求字符串中是否包含零个或多个a<br>var patt = /a*/ ;<br>表示要求字符串是否包含一个或零个a<br>var patt = /a? / ;<br>表示要求字符串是否包含连续三个a<br>ar patt = /a{3}/ ;<br>表示要求字符串是否包至少3个连续的a，最多5个连续的a<br>var patt = /a{3,5}/ ;<br>表示要求字符串是否包至少3个连续的a,<br>var patt = /a{3,}/;<br>表示要求字符串必须以a结尾<br>var patt= /a$/<br>表示要求字符串必须以a开头<br>var patt= /^a/</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>hao Zhou</li>
+    <li><strong>本文链接：</strong><a href="http://example.com/2021/07/16/javaweb%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/index.html" title="http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;16&#x2F;javaweb%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0&#x2F;index.html">http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;16&#x2F;javaweb%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="https://i.loli.net/2021/07/17/GdAvrzyJcuw5R9s.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/2021/07/16/%E5%85%B3%E4%BA%8Ecss%E7%9A%84hover%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8/">关于css的hover灵活运用。<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: '04eb1474b835feb3a8f9',
+      clientSecret: 'cc6f028f3ecfc162121fdf622b8a39dd6507c19d',
+      id: window.location.pathname,
+      repo: 'zh-space',
+      owner: 'zh-space',
+      admin: 'zh-space'
+    });
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AD%A6%E5%89%8D%E7%AF%87"><span class="toc-text">自学前篇</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript%E7%9A%84%E8%A1%A8%E5%8D%95"><span class="toc-text">javascript的表单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript%E7%9A%84%E8%BF%90%E7%AE%97%E7%AC%A6%E5%92%8Cjava%E6%9C%89%E4%BA%9B%E4%B8%8D%E5%90%8C"><span class="toc-text">javascript的运算符和java有些不同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript%E7%9A%84%E6%95%B0%E7%BB%84%E5%92%8Cpython%E7%9A%84%E6%95%B0%E7%BB%84%E5%BE%88%E7%9B%B8%E4%BC%BC%EF%BC%8C%E7%95%A5%E8%BF%87%E3%80%82"><span class="toc-text">javascript的数组和python的数组很相似，略过。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascrpit%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-text">javascrpit定义函数的两种方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#js%E4%B8%8D%E6%94%AF%E6%8C%81%E9%87%8D%E8%BD%BD"><span class="toc-text">js不支持重载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84arguments%E9%9A%90%E5%BD%A2%E5%8F%82%E6%95%B0%EF%BC%88%E4%BB%85%E5%9C%A8function%E5%86%85%EF%BC%89"><span class="toc-text">函数的arguments隐形参数（仅在function内）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1"><span class="toc-text">javascript的自定义对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6"><span class="toc-text">javascript中的事件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#javascript%E9%9D%99%E6%80%81%E6%B3%A8%E5%86%8C%E4%B8%8E%E5%8A%A8%E6%80%81%E6%B3%A8%E5%86%8C"><span class="toc-text">javascript静态注册与动态注册</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">正则表达式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1505075162 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zh-space "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:1505075162@qq.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  z-space</p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+    <div class="fab fab-daovoice">
+      <i class="iconfont iconcomment"></i>
+    </div>
+  
+  
+    <a href="https://support.qq.com/product/339571" target="_blank">
+      <div class="fab fab-tencent-chao">
+        <i class="iconfont iconcomment"></i>
+      </div>
+    </a>
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+  <script>
+  $.getScript("//cdn.jsdelivr.net/npm/leancloud-storage@4.1.0/dist/av-min.js", () => {
+
+    AV.init({
+      appId: 'V3lQcVtqFjBNGSk82WE6t0eg-gzGzoHsz',
+      appKey: 'Vv48C39AQLdubOy8CDv8NxP7',
+      serverURLs: 'https://leancloud.cn/',
+    });
+
+    const showCount = (Counter) => {
+      const asyncLimit = new AsyncLimit(2);
+      $(".leancloud").each(async (e) => {
+        const url = $(".leancloud").eq(e).attr('id').trim();
+        const query = new AV.Query("Counter");
+        query.equalTo("words", url);
+        let count = await asyncLimit.run(() => query.count());
+        $(".leancloud").eq(e).text(count ? count : '--');
+      });
+    }
+
+    const addCount = (Counter) => {
+      const url = $(".leancloud").length === 1 ? $(".leancloud").attr('id').trim() : 'http://example.com';
+      var query = new Counter;
+      query.save({
+        words: url
+      });
+    }
+
+    $(function () {
+      const Counter = AV.Object.extend("Counter");
+      addCount(Counter);
+      showCount(Counter);
+    });
+
+  });
+</script>
+
+
+
+  
+
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i["DaoVoiceObject"] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    a.charset = "utf-8";
+    m.parentNode.insertBefore(a, m)
+  })(window, document, "script", "https://widget.daovoice.io/widget/0f81ff2f.js", "daovoice")
+  daovoice('init', {
+    app_id: "f92068f6"
+  }, {
+    launcher: {
+      disableLauncherIcon: true,
+    },
+  });
+  daovoice('update');
+</script>
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
