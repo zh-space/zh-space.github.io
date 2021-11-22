@@ -197,7 +197,7 @@
           <i class="iconfont iconeye"></i><span id="/2021/11/22/elasticsearch/" class="leancloud" data-flag-title="elasticsearch study"></span>
         </span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>626</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>878</span>
     </div>
   </div>
 </section>
@@ -211,7 +211,10 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">#-Xms2g<br>#-Xmx2g<br></code></pre></td></tr></table></figure>
 <p>这个应该就是设置elasticsearch运行内存的代码<br>修改为：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">-Xms64m<br>-Xmx128m<br></code></pre></td></tr></table></figure>
-<p>我设置的是最小64M最大128M，你们可以根据自己的需要设置</p>
+<p>我设置的是最小64M最大128M，你们可以根据自己的需要设置### elasticsearch初步检索<br>1._cat</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">GET /_cat/nodes:  查看所有节点<br>GET /_cat/health:  查看es健康状况<br>GET /_cat/master:  查看主节点<br>GET /_cat/indices:  查看所有索引  show database; <br></code></pre></td></tr></table></figure>
+<p>2.索引一个文档（保存）<br>保存一个数据，保存在那个索引下的那个类型下，指定用那个唯一标识</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">PUT customer/external/1; 在customer索引下的external类型下保存1号数据为<br></code></pre></td></tr></table></figure>
 
       </section>
       <section class="extra">
@@ -238,8 +241,8 @@
         
         
   <nav class="nav">
-    <a></a>
-    <a href="/2021/11/22/docker/">docker study<i class="iconfont iconright"></i></a>
+    <a href="/2021/11/22/docker/"><i class="iconfont iconleft"></i>docker study</a>
+    <a href="/2021/07/16/%E5%85%B3%E4%BA%8Ecss%E7%9A%84hover%E7%81%B5%E6%B4%BB%E8%BF%90%E7%94%A8/">关于css的hover灵活运用。<i class="iconfont iconright"></i></a>
   </nav>
 
       </section>
