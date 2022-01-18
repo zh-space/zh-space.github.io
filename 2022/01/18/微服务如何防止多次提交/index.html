@@ -1,0 +1,508 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>微服务如何防止多次提交 study - 老段</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="今天突然想起了以前面试的时候有个面试官问我如何防止微服...">
+  <meta name="author" content="hao Zhou">
+  <link rel="icon" href="/images/icons/giao.jpg" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/giao.jpg" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/giao.jpg" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/giao.jpg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/giao.jpg">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_r673sha78lq.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: '[object Object]'
+      },
+      donate: {
+        enable: true,
+        alipay: '/images/icons/zfb.jpg',
+        wechat: '/images/icons/wx.png'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: true
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'image',
+        image: '/images/icons/wxxcx.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">微服务如何防止多次提交 study</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/galleries/ " class="underline "> 摄影</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  z-space</p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/icons/fm.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">微服务如何防止多次提交 study</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>一月 18, 2022</span>
+      
+        <span class="post-info-item">
+          <i class="iconfont iconeye"></i><span id="/2022/01/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4/" class="leancloud" data-flag-title="微服务如何防止多次提交 study"></span>
+        </span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>11103</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        <h2 id="今天突然想起了以前面试的时候有个面试官问我如何防止微服务多次提交，今天到网上学习了一下"><a href="#今天突然想起了以前面试的时候有个面试官问我如何防止微服务多次提交，今天到网上学习了一下" class="headerlink" title="今天突然想起了以前面试的时候有个面试官问我如何防止微服务多次提交，今天到网上学习了一下"></a>今天突然想起了以前面试的时候有个面试官问我如何防止微服务多次提交，今天到网上学习了一下</h2><h2 id="前端拦截"><a href="#前端拦截" class="headerlink" title="前端拦截"></a>前端拦截</h2><p>点击按钮后把按钮变成不可点击状态，或者跳转另一个页面等方法都可以做到前端拦截，但是如果从后端直接调用请求呢。</p>
+<h2 id="后端拦截"><a href="#后端拦截" class="headerlink" title="后端拦截"></a>后端拦截</h2><p>后端拦截的实现思路是在方法执行之前，先判断此业务是否已经执行过，如果执行过则不再执行，否则就正常执行。<br>我们将请求的业务 ID 存储在内存中，并且通过添加互斥锁来保证多线程下的程序执行安全<br>然而，将数据存储在内存中，最简单的方法就是使用 HashMap 存储，或者是使用 Guava Cache 也是同样的效果，但很显然 HashMap 可以更快的实现功能，所以我们先来实现一个 HashMap 的防重（防止重复）版本。</p>
+<h3 id="1-基础版——HashMap"><a href="#1-基础版——HashMap" class="headerlink" title="1.基础版——HashMap"></a>1.基础版——HashMap</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">import org.springframework.web.bind.annotation.RequestMapping;<br>import org.springframework.web.bind.annotation.RestController;<br> <br>import java.util.HashMap;<br>import java.util.Map;<br> <br>/**<br> * 普通 Map 版本<br> */<br>@RequestMapping(&quot;/user&quot;)<br>@RestController<br>public class UserController3 &#123;<br> <br>    // 缓存 ID 集合<br>    private Map&lt;String, Integer&gt; reqCache = new HashMap&lt;&gt;();<br> <br>    @RequestMapping(&quot;/add&quot;)<br>    public String addUser(String id) &#123;<br>        // 非空判断(忽略)...<br>        synchronized (this.getClass()) &#123;<br>            // 重复请求判断<br>            if (reqCache.containsKey(id)) &#123;<br>                // 重复请求<br>                System.out.println(&quot;请勿重复提交！！！&quot; + id);<br>                return &quot;执行失败&quot;;<br>            &#125;<br>            // 存储请求 ID<br>            reqCache.put(id, 1);<br>        &#125;<br>        // 业务代码...<br>        System.out.println(&quot;添加用户ID:&quot; + id);<br>        return &quot;执行成功！&quot;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>存在的问题：此实现方式有一个致命的问题，因为 HashMap 是无限增长的，因此它会占用越来越多的内存，并且随着 HashMap 数量的增加查找的速度也会降低，所以我们需要实现一个可以自动“清除”过期数据的实现方案。</p>
+<h3 id="2-优化版——固定大小的数组"><a href="#2-优化版——固定大小的数组" class="headerlink" title="2.优化版——固定大小的数组"></a>2.优化版——固定大小的数组</h3><p>此版本解决了 HashMap 无限增长的问题，它使用数组加下标计数器（reqCacheCounter）的方式，实现了固定数组的循环存储。</p>
+<p>当数组存储到最后一位时，将数组的存储下标设置 0，再从头开始存储数据，实现代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">import org.springframework.web.bind.annotation.RequestMapping;<br>import org.springframework.web.bind.annotation.RestController;<br> <br>import java.util.Arrays;<br> <br>@RequestMapping(&quot;/user&quot;)<br>@RestController<br>public class UserController &#123;<br> <br>    private static String[] reqCache = new String[100]; // 请求 ID 存储集合<br>    private static Integer reqCacheCounter = 0; // 请求计数器（指示 ID 存储的位置）<br> <br>    @RequestMapping(&quot;/add&quot;)<br>    public String addUser(String id) &#123;<br>        // 非空判断(忽略)...<br>        synchronized (this.getClass()) &#123;<br>            // 重复请求判断<br>            if (Arrays.asList(reqCache).contains(id)) &#123;<br>                // 重复请求<br>                System.out.println(&quot;请勿重复提交！！！&quot; + id);<br>                return &quot;执行失败&quot;;<br>            &#125;<br>            // 记录请求 ID<br>            if (reqCacheCounter &gt;= reqCache.length) reqCacheCounter = 0; // 重置计数器<br>            reqCache[reqCacheCounter] = id; // 将 ID 保存到缓存<br>            reqCacheCounter++; // 下标往后移一位<br>        &#125;<br>        // 业务代码...<br>        System.out.println(&quot;添加用户ID:&quot; + id);<br>        return &quot;执行成功！&quot;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="3-扩展版——双重检测锁-DCL"><a href="#3-扩展版——双重检测锁-DCL" class="headerlink" title="3.扩展版——双重检测锁(DCL)"></a>3.扩展版——双重检测锁(DCL)</h3><p>上一种实现方法将判断和添加业务，都放入 synchronized 中进行加锁操作，这样显然性能不是很高，于是我们可以使用单例中著名的 DCL（Double Checked Locking，双重检测锁）来优化代码的执行效率，实现代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">import org.springframework.web.bind.annotation.RequestMapping;<br>import org.springframework.web.bind.annotation.RestController;<br> <br>import java.util.Arrays;<br> <br>@RequestMapping(&quot;/user&quot;)<br>@RestController<br>public class UserController &#123;<br> <br>    private static String[] reqCache = new String[100]; // 请求 ID 存储集合<br>    private static Integer reqCacheCounter = 0; // 请求计数器（指示 ID 存储的位置）<br> <br>    @RequestMapping(&quot;/add&quot;)<br>    public String addUser(String id) &#123;<br>        // 非空判断(忽略)...<br>        // 重复请求判断<br>        if (Arrays.asList(reqCache).contains(id)) &#123;<br>            // 重复请求<br>            System.out.println(&quot;请勿重复提交！！！&quot; + id);<br>            return &quot;执行失败&quot;;<br>        &#125;<br>        synchronized (this.getClass()) &#123;<br>            // 双重检查锁（DCL,double checked locking）提高程序的执行效率<br>            if (Arrays.asList(reqCache).contains(id)) &#123;<br>                // 重复请求<br>                System.out.println(&quot;请勿重复提交！！！&quot; + id);<br>                return &quot;执行失败&quot;;<br>            &#125;<br>            // 记录请求 ID<br>            if (reqCacheCounter &gt;= reqCache.length) reqCacheCounter = 0; // 重置计数器<br>            reqCache[reqCacheCounter] = id; // 将 ID 保存到缓存<br>            reqCacheCounter++; // 下标往后移一位<br>        &#125;<br>        // 业务代码...<br>        System.out.println(&quot;添加用户ID:&quot; + id);<br>        return &quot;执行成功！&quot;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>注意：DCL 适用于重复提交频繁比较高的业务场景，对于相反的业务场景下 DCL 并不适用。</p>
+<h3 id="4-完善版——LRUMap"><a href="#4-完善版——LRUMap" class="headerlink" title="4.完善版——LRUMap"></a>4.完善版——LRUMap</h3><p>上面的代码基本已经实现了重复数据的拦截，但显然不够简洁和优雅，比如下标计数器的声明和业务处理等，但值得庆幸的是 Apache 为我们提供了一个 commons-collections 的框架，里面有一个非常好用的数据结构 LRUMap 可以保存指定数量的固定的数据，并且它会按照 LRU 算法，帮你清除最不常用的数据。<br>小贴士：LRU 是 Least Recently Used 的缩写，即最近最少使用，是一种常用的数据淘汰算法，选择最近最久未使用的数据予以淘汰。<br>首先，我们先来添加 Apache commons collections 的引用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext"> &lt;!-- 集合工具类 apache commons collections --&gt;<br>&lt;!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 --&gt;<br>&lt;dependency&gt;<br>  &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;<br>  &lt;artifactId&gt;commons-collections4&lt;/artifactId&gt;<br>  &lt;version&gt;4.4&lt;/version&gt;<br>&lt;/dependency&gt;<br></code></pre></td></tr></table></figure>
+<p>实现代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">import org.apache.commons.collections4.map.LRUMap;<br>import org.springframework.web.bind.annotation.RequestMapping;<br>import org.springframework.web.bind.annotation.RestController;<br> <br>@RequestMapping(&quot;/user&quot;)<br>@RestController<br>public class UserController &#123;<br> <br>    // 最大容量 100 个，根据 LRU 算法淘汰数据的 Map 集合<br>    private LRUMap&lt;String, Integer&gt; reqCache = new LRUMap&lt;&gt;(100);<br> <br>    @RequestMapping(&quot;/add&quot;)<br>    public String addUser(String id) &#123;<br>        // 非空判断(忽略)...<br>        synchronized (this.getClass()) &#123;<br>            // 重复请求判断<br>            if (reqCache.containsKey(id)) &#123;<br>                // 重复请求<br>                System.out.println(&quot;请勿重复提交！！！&quot; + id);<br>                return &quot;执行失败&quot;;<br>            &#125;<br>            // 存储请求 ID<br>            reqCache.put(id, 1);<br>        &#125;<br>        // 业务代码...<br>        System.out.println(&quot;添加用户ID:&quot; + id);<br>        return &quot;执行成功！&quot;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用了 LRUMap 之后，代码显然简洁了很多。</p>
+<h3 id="5-最终版——封装"><a href="#5-最终版——封装" class="headerlink" title="5.最终版——封装"></a>5.最终版——封装</h3><p>以上都是方法级别的实现方案，然而在实际的业务中，我们可能有很多的方法都需要防重，那么接下来我们就来封装一个公共的方法，以供所有类使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">import org.apache.commons.collections4.map.LRUMap;<br> <br>/**<br> * 幂等性判断<br> */<br>public class IdempotentUtils &#123;<br> <br>    // 根据 LRU(Least Recently Used，最近最少使用)算法淘汰数据的 Map 集合，最大容量 100 个<br>    private static LRUMap&lt;String, Integer&gt; reqCache = new LRUMap&lt;&gt;(100);<br> <br>    /**<br>     * 幂等性判断<br>     * @return<br>     */<br>    public static boolean judge(String id, Object lockClass) &#123;<br>        synchronized (lockClass) &#123;<br>            // 重复请求判断<br>            if (reqCache.containsKey(id)) &#123;<br>                // 重复请求<br>                System.out.println(&quot;请勿重复提交！！！&quot; + id);<br>                return false;<br>            &#125;<br>            // 非重复请求，存储请求 ID<br>            reqCache.put(id, 1);<br>        &#125;<br>        return true;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>调用代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">import com.example.idempote.util.IdempotentUtils;<br>import org.springframework.web.bind.annotation.RequestMapping;<br>import org.springframework.web.bind.annotation.RestController;<br> <br>@RequestMapping(&quot;/user&quot;)<br>@RestController<br>public class UserController4 &#123;<br>    @RequestMapping(&quot;/add&quot;)<br>    public String addUser(String id) &#123;<br>        // 非空判断(忽略)...<br>        // -------------- 幂等性调用（开始） --------------<br>        if (!IdempotentUtils.judge(id, this.getClass())) &#123;<br>            return &quot;执行失败&quot;;<br>        &#125;<br>        // -------------- 幂等性调用（结束） --------------<br>        // 业务代码...<br>        System.out.println(&quot;添加用户ID:&quot; + id);<br>        return &quot;执行成功！&quot;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>小贴士：一般情况下代码写到这里就结束了，但想要更简洁也是可以实现的，你可以通过自定义注解，将业务代码写到注解中，需要调用的方法只需要写一行注解就可以防止数据重复提交了，老铁们可以自行尝试一下</p>
+<h3 id="扩展知识——LRUMap-实现原理分析"><a href="#扩展知识——LRUMap-实现原理分析" class="headerlink" title="扩展知识——LRUMap 实现原理分析"></a>扩展知识——LRUMap 实现原理分析</h3><p>既然 LRUMap 如此强大，我们就来看看它是如何实现的。<br>LRUMap 的本质是持有头结点的环回双链表结构，它的存储结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">AbstractLinkedMap.LinkEntry entry;<br></code></pre></td></tr></table></figure>
+<p>当调用查询方法时，会将使用的元素放在双链表 header 的前一个位置，源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public V get(Object key, boolean updateToMRU) &#123;<br>    LinkEntry&lt;K, V&gt; entry = this.getEntry(key);<br>    if (entry == null) &#123;<br>        return null;<br>    &#125; else &#123;<br>        if (updateToMRU) &#123;<br>            this.moveToMRU(entry);<br>        &#125;<br> <br>        return entry.getValue();<br>    &#125;<br>&#125;<br>protected void moveToMRU(LinkEntry&lt;K, V&gt; entry) &#123;<br>    if (entry.after != this.header) &#123;<br>        ++this.modCount;<br>        if (entry.before == null) &#123;<br>            throw new IllegalStateException(&quot;Entry.before is null. This should not occur if your keys are immutable, and you have used synchronization properly.&quot;);<br>        &#125;<br> <br>        entry.before.after = entry.after;<br>        entry.after.before = entry.before;<br>        entry.after = this.header;<br>        entry.before = this.header.before;<br>        this.header.before.after = entry;<br>        this.header.before = entry;<br>    &#125; else if (entry == this.header) &#123;<br>        throw new IllegalStateException(&quot;Can&#x27;t move header to MRU This should not occur if your keys are immutable, and you have used synchronization properly.&quot;);<br>    &#125;<br> <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>如果新增元素时，容量满了就会移除 header 的后一个元素，添加源码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">protected void addMapping(int hashIndex, int hashCode, K key, V value) &#123;<br>     // 判断容器是否已满 <br>     if (this.isFull()) &#123;<br>         LinkEntry&lt;K, V&gt; reuse = this.header.after;<br>         boolean removeLRUEntry = false;<br>         if (!this.scanUntilRemovable) &#123;<br>             removeLRUEntry = this.removeLRU(reuse);<br>         &#125; else &#123;<br>             while(reuse != this.header &amp;&amp; reuse != null) &#123;<br>                 if (this.removeLRU(reuse)) &#123;<br>                     removeLRUEntry = true;<br>                     break;<br>                 &#125;<br>                 reuse = reuse.after;<br>             &#125;<br>             if (reuse == null) &#123;<br>                 throw new IllegalStateException(&quot;Entry.after=null, header.after=&quot; + this.header.after + &quot; header.before=&quot; + this.header.before + &quot; key=&quot; + key + &quot; value=&quot; + value + &quot; size=&quot; + this.size + &quot; maxSize=&quot; + this.maxSize + &quot; This should not occur if your keys are immutable, and you have used synchronization properly.&quot;);<br>             &#125;<br>         &#125;<br>         if (removeLRUEntry) &#123;<br>             if (reuse == null) &#123;<br>                 throw new IllegalStateException(&quot;reuse=null, header.after=&quot; + this.header.after + &quot; header.before=&quot; + this.header.before + &quot; key=&quot; + key + &quot; value=&quot; + value + &quot; size=&quot; + this.size + &quot; maxSize=&quot; + this.maxSize + &quot; This should not occur if your keys are immutable, and you have used synchronization properly.&quot;);<br>             &#125;<br>             this.reuseMapping(reuse, hashIndex, hashCode, key, value);<br>         &#125; else &#123;<br>             super.addMapping(hashIndex, hashCode, key, value);<br>         &#125;<br>     &#125; else &#123;<br>         super.addMapping(hashIndex, hashCode, key, value);<br>     &#125;<br> &#125;<br></code></pre></td></tr></table></figure>
+<p>判断容量的源码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">public boolean isFull() &#123;<br>  return size &gt;= maxSize;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>容量未满就直接添加数据：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">super.addMapping(hashIndex, hashCode, key, value);<br></code></pre></td></tr></table></figure>
+<p>如果容量满了，就调用 reuseMapping 方法使用 LRU 算法对数据进行清除。<br>综合来说：LRUMap 的本质是持有头结点的环回双链表结构，当使用元素时，就将该元素放在双链表 header 的前一个位置，在新增元素时，如果容量满了就会移除 header 的后一个元素。</p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>hao Zhou</li>
+    <li><strong>本文链接：</strong><a href="http://example.com/2022/01/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4/index.html" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;01&#x2F;18&#x2F;%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4&#x2F;index.html">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;01&#x2F;18&#x2F;%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="/images/icons/zfb.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/2022/01/04/oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8Cmysql%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%8C%BA%E5%88%AB/">oracle数据库和mysql数据库的区别 study<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: '04eb1474b835feb3a8f9',
+      clientSecret: 'cc6f028f3ecfc162121fdf622b8a39dd6507c19d',
+      id: window.location.pathname,
+      repo: 'zh-space',
+      owner: 'zh-space',
+      admin: 'zh-space'
+    });
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8A%E5%A4%A9%E7%AA%81%E7%84%B6%E6%83%B3%E8%B5%B7%E4%BA%86%E4%BB%A5%E5%89%8D%E9%9D%A2%E8%AF%95%E7%9A%84%E6%97%B6%E5%80%99%E6%9C%89%E4%B8%AA%E9%9D%A2%E8%AF%95%E5%AE%98%E9%97%AE%E6%88%91%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4%EF%BC%8C%E4%BB%8A%E5%A4%A9%E5%88%B0%E7%BD%91%E4%B8%8A%E5%AD%A6%E4%B9%A0%E4%BA%86%E4%B8%80%E4%B8%8B"><span class="toc-text">今天突然想起了以前面试的时候有个面试官问我如何防止微服务多次提交，今天到网上学习了一下</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%8B%A6%E6%88%AA"><span class="toc-text">前端拦截</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%8B%A6%E6%88%AA"><span class="toc-text">后端拦截</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E7%89%88%E2%80%94%E2%80%94HashMap"><span class="toc-text">1.基础版——HashMap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BC%98%E5%8C%96%E7%89%88%E2%80%94%E2%80%94%E5%9B%BA%E5%AE%9A%E5%A4%A7%E5%B0%8F%E7%9A%84%E6%95%B0%E7%BB%84"><span class="toc-text">2.优化版——固定大小的数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%89%A9%E5%B1%95%E7%89%88%E2%80%94%E2%80%94%E5%8F%8C%E9%87%8D%E6%A3%80%E6%B5%8B%E9%94%81-DCL"><span class="toc-text">3.扩展版——双重检测锁(DCL)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%AE%8C%E5%96%84%E7%89%88%E2%80%94%E2%80%94LRUMap"><span class="toc-text">4.完善版——LRUMap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9C%80%E7%BB%88%E7%89%88%E2%80%94%E2%80%94%E5%B0%81%E8%A3%85"><span class="toc-text">5.最终版——封装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%E7%9F%A5%E8%AF%86%E2%80%94%E2%80%94LRUMap-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90"><span class="toc-text">扩展知识——LRUMap 实现原理分析</span></a></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1505075162 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zh-space "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:1505075162@qq.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  z-space</p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+    <div class="fab fab-daovoice">
+      <i class="iconfont iconcomment"></i>
+    </div>
+  
+  
+    <a href="https://support.qq.com/product/339571" target="_blank">
+      <div class="fab fab-tencent-chao">
+        <i class="iconfont iconcomment"></i>
+      </div>
+    </a>
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+  <script>
+  $.getScript("//cdn.jsdelivr.net/npm/leancloud-storage@4.1.0/dist/av-min.js", () => {
+
+    AV.init({
+      appId: 'V3lQcVtqFjBNGSk82WE6t0eg-gzGzoHsz',
+      appKey: 'Vv48C39AQLdubOy8CDv8NxP7',
+      serverURLs: 'https://leancloud.cn/',
+    });
+
+    const showCount = (Counter) => {
+      const asyncLimit = new AsyncLimit(2);
+      $(".leancloud").each(async (e) => {
+        const url = $(".leancloud").eq(e).attr('id').trim();
+        const query = new AV.Query("Counter");
+        query.equalTo("words", url);
+        let count = await asyncLimit.run(() => query.count());
+        $(".leancloud").eq(e).text(count ? count : '--');
+      });
+    }
+
+    const addCount = (Counter) => {
+      const url = $(".leancloud").length === 1 ? $(".leancloud").attr('id').trim() : 'http://example.com';
+      var query = new Counter;
+      query.save({
+        words: url
+      });
+    }
+
+    $(function () {
+      const Counter = AV.Object.extend("Counter");
+      addCount(Counter);
+      showCount(Counter);
+    });
+
+  });
+</script>
+
+
+
+  
+
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i["DaoVoiceObject"] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    a.charset = "utf-8";
+    m.parentNode.insertBefore(a, m)
+  })(window, document, "script", "https://widget.daovoice.io/widget/0f81ff2f.js", "daovoice")
+  daovoice('init', {
+    app_id: "f92068f6"
+  }, {
+    launcher: {
+      disableLauncherIcon: true,
+    },
+  });
+  daovoice('update');
+</script>
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
