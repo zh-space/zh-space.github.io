@@ -1,0 +1,487 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" color-mode=light>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>存储过程 study - 老段</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="google" content="notranslate" />
+  
+  <meta name="description" content="在用友实习的时候做一个 定时任务加工用品信息 的功能，...">
+  <meta name="author" content="hao Zhou">
+  <link rel="icon" href="/images/icons/giao.jpg" type="image/png" sizes="16x16">
+  <link rel="icon" href="/images/icons/giao.jpg" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/images/icons/giao.jpg" sizes="180x180">
+  <meta rel="mask-icon" href="/images/icons/giao.jpg" color="#333333">
+  
+    <meta rel="msapplication-TileImage" content="/images/icons/giao.jpg">
+    <meta rel="msapplication-TileColor" content="#000000">
+  
+
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+    
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1445822_r673sha78lq.css">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  
+
+  
+    
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/xcode.min.css" name="highlight-style" mode="light">
+
+      
+        
+        
+<link rel="stylesheet" href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/solarized-dark.min.css" name="highlight-style" mode="dark">
+
+      
+  
+
+  <script>
+    var CONFIG = window.CONFIG || {};
+    var ZHAOO = window.ZHAOO || {};
+    CONFIG = {
+      isHome: false,
+      fancybox: true,
+      pjax: false,
+      lazyload: {
+        enable: true,
+        only_post: 'false',
+        loading: '[object Object]'
+      },
+      donate: {
+        enable: true,
+        alipay: '/images/icons/zfb.jpg',
+        wechat: '/images/icons/wx.png'
+      },
+      galleries: {
+        enable: true
+      },
+      fab: {
+        enable: true,
+        always_show: true
+      },
+      carrier: {
+        enable: true
+      },
+      daovoice: {
+        enable: true
+      },
+      preview: {
+        background: {
+          default: '',
+          api: ''
+        },
+        motto: {
+          default: '我在开了灯的床头下，想问问自己的心啊。',
+          typing: true,
+          api: 'https://v2.jinrishici.com/one.json',
+          data_contents: '["data","content"]'
+        },
+      },
+      qrcode: {
+        enable: true,
+        type: 'image',
+        image: '/images/icons/wxxcx.jpg',
+      },
+      toc: {
+        enable: true
+      },
+      scrollbar: {
+        type: 'default'
+      },
+      notification: {
+        enable: false,
+        delay: 4500,
+        list: '',
+        page_white_list: '',
+        page_black_list: ''
+      },
+      search: {
+        enable: false,
+        path: ''
+      }
+    }
+  </script>
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="lock-screen">
+  <div class="loading"></div>
+  
+    
+
+
+  <nav class="navbar">
+    <div class="left">
+      
+        <i class="iconfont iconhome j-navbar-back-home"></i>
+      
+      
+        <i class="iconfont iconqrcode j-navbar-qrcode"></i>
+      
+      
+        <i class="iconfont iconmoono" id="color-toggle" color-toggle="light"></i>
+      
+      
+    </div>
+    <div class="center">存储过程 study</div>
+    <div class="right">
+      <i class="iconfont iconmenu j-navbar-menu"></i>
+    </div>
+    
+      <div id="qrcode-navbar"></div>
+    
+  </nav>
+
+  
+  
+
+<nav class="menu">
+  <div class="menu-container">
+    <div class="menu-close">
+      <i class="iconfont iconbaseline-close-px"></i>
+    </div>
+    <ul class="menu-content"><li class="menu-item">
+        <a href="/ " class="underline "> 首页</a>
+      </li><li class="menu-item">
+        <a href="/galleries/ " class="underline "> 摄影</a>
+      </li><li class="menu-item">
+        <a href="/archives/ " class="underline "> 归档</a>
+      </li><li class="menu-item">
+        <a href="/tags/ " class="underline "> 标签</a>
+      </li><li class="menu-item">
+        <a href="/categories/ " class="underline "> 分类</a>
+      </li><li class="menu-item">
+        <a href="/about/ " class="underline "> 关于</a>
+      </li></ul>
+    
+      <div class="menu-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  z-space</p></div>
+    
+  </div>
+</nav>
+  <main id="main">
+  <div class="article-wrap">
+    <div class="row container">
+      <div class="col-xl-3"></div>
+      <div class="col-xl-6"><article class="article">
+  <div class="wrap">
+    <section class="head">
+  <img   class="lazyload" data-original="/images/icons/fm.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="  draggable="false">
+  <div class="head-mask">
+    <h1 class="head-title">存储过程 study</h1>
+    <div class="head-info">
+      <span class="post-info-item"><i class="iconfont iconcalendar"></i>一月 20, 2022</span>
+      
+        <span class="post-info-item">
+          <i class="iconfont iconeye"></i><span id="/2022/01/20/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" class="leancloud" data-flag-title="存储过程 study"></span>
+        </span>
+      
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>3316</span>
+    </div>
+  </div>
+</section>
+    <section class="main">
+      <section class="content">
+        <h2 id="在用友实习的时候做一个-定时任务加工用品信息-的功能，需要每隔一段时间就执行sql更新数据库，那么这个sql语句怎么写呢。这就要用到存储过程了。"><a href="#在用友实习的时候做一个-定时任务加工用品信息-的功能，需要每隔一段时间就执行sql更新数据库，那么这个sql语句怎么写呢。这就要用到存储过程了。" class="headerlink" title="在用友实习的时候做一个 定时任务加工用品信息 的功能，需要每隔一段时间就执行sql更新数据库，那么这个sql语句怎么写呢。这就要用到存储过程了。"></a>在用友实习的时候做一个 定时任务加工用品信息 的功能，需要每隔一段时间就执行sql更新数据库，那么这个sql语句怎么写呢。这就要用到存储过程了。</h2><h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><h3 id="示例一：无参无返"><a href="#示例一：无参无返" class="headerlink" title="示例一：无参无返"></a>示例一：无参无返</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace procedure p1<br>--or replace代表创建该存储过程时，若存储名存在，则替换原存储过程，重新创建<br>--无参数列表时，不需要写()<br>as<br>begin<br>  dbms_output.put_line(&#x27;hello world&#x27;);<br>end;<br><br>--执行存储过程方式1<br>set serveroutput on;<br>begin<br>  p1();<br>end;<br>--执行存储过程方式2<br>set serveroutput on;<br>execute p1();<br></code></pre></td></tr></table></figure>
+<h3 id="示例二：有参有返"><a href="#示例二：有参有返" class="headerlink" title="示例二：有参有返"></a>示例二：有参有返</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace procedure p2<br>(name in varchar2,age int,msg out varchar2)<br>--参数列表中，声明变量类型时切记不能写大小，只写类型名即可，例如参数列表中的name变量的声明<br>--参数列表中，输入参数用in表示，输出参数用out表示，不写时默认为输入参数。<br>------------输入参数不能携带值出去，输出参数不能携带值进来，当既想携带值进来，又想携带值出去，可以用in out<br>as<br>begin<br>  msg:=&#x27;姓名&#x27;||name||&#x27;,年龄&#x27;||age;<br>  --赋值时除了可以使用：=，还可以用into来实现<br>  --上面子句等价于select &#x27;姓名&#x27;||name||&#x27;,年龄&#x27;||age into msg from dual;<br>end;<br>--执行存储过程<br>set serveroutput on;<br>declare<br>  msg varchar2(100);<br>begin<br>  p2(&#x27;张三&#x27;,23,msg);<br>  dbms_output.put_line(msg);<br>end;<br></code></pre></td></tr></table></figure>
+<h3 id="示例四：参数列表中有in-out参数"><a href="#示例四：参数列表中有in-out参数" class="headerlink" title="示例四：参数列表中有in out参数"></a>示例四：参数列表中有in out参数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace procedure p3<br>(msg in out varchar2)<br>--当既想携带值进来，又想携带值出去，可以用in out<br>as<br>begin<br>  dbms_output.put_line(msg); --输出的为携带进来的值<br>  msg:=&#x27;我是从存储过程中携带出来的值&#x27;;<br>end;<br><br><br>--执行存储过程<br>set serveroutput on;<br>declare<br>  msg varchar2(100):=&#x27;我是从携带进去的值&#x27;;<br>begin<br>  p3(msg);<br>  dbms_output.put_line(msg);<br>end;<br></code></pre></td></tr></table></figure>
+<h3 id="示例四：存储过程中定义参数"><a href="#示例四：存储过程中定义参数" class="headerlink" title="示例四：存储过程中定义参数"></a>示例四：存储过程中定义参数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace procedure p4<br>as<br>  --存储过程中定义的参数列表<br>  name varchar(50);<br>begin<br>  name := &#x27;hello world&#x27;;<br>  dbms_output.put_line(name);<br>end;<br>---执行存储过程<br>set serveroutput on;<br>execute p4();<br></code></pre></td></tr></table></figure>
+<h2 id="函数存储"><a href="#函数存储" class="headerlink" title="函数存储"></a>函数存储</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace function f1<br>return varchar--必须有返回值，且声明返回值类型时不需要加大小<br>as<br>  msg varchar(50);<br>begin<br>   msg := &#x27;hello world&#x27;;<br>   return msg;<br>end;<br><br>--执行函数方式1<br>select f1() from dual;<br>--执行函数方式2<br>set serveroutput on;<br>begin <br>  dbms_output.put_line(f1());<br>end;<br><br></code></pre></td></tr></table></figure>
+<h3 id="再看看我写的存储过程"><a href="#再看看我写的存储过程" class="headerlink" title="再看看我写的存储过程"></a>再看看我写的存储过程</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">CREATE OR REPLACE PROCEDURE P_INSERT_JD_PARTS<br>--参数<br>(USERID IN NUMBER) --修改人id<br>AS<br>BEGIN<br>  --查询京东商品信息表中名称不为空且加工状态为未加工的数据<br>  FOR DATAS IN(<br>    SELECT * FROM TT_PART_JD_SKU T WHERE T.SKU_NAME is not null AND T.MACHINE_FLAG=0<br>    )LOOP<br>    INSERT INTO TT_PART_DEFINE TP(<br>    --插入到TT_PART_DEFINE的字段<br>    TP.PART_ID,       --用品ID<br>    TP.PART_OLDCODE,  --用品编码<br>    TP.PART_CNAME,    --用品名称<br>    TP.PART_CODE,     --用品件号<br>    TP.ARTICLES_TYPE, --用品还是备件<br>    TP.CREATE_DATE,   --创建时间<br>    TP.CREATE_BY      --创建人<br>    )values(<br>    SEQ_OWNID.NEXTVAL,--通过序列设置PART_ID<br>    DATAS.JD_SKU_ID,<br>    DATAS.SKU_NAME,<br>    DATAS.SKU_ID,<br>    92931001,         --默认为用品<br>    SYSDATE,          --当前时间<br>    USERID            <br>    );<br>    --将TT_PART_JD_SKU表中的加工状态改为已加工状态，并且设置加工时间<br>    UPDATE TT_PART_JD_SKU TK SET TK.MACHINE_FLAG=1,TK.MACHINE_TIME=SYSDATE WHERE TK.JD_SKU_ID=DATAS.JD_SKU_ID AND TK.SKU_NAME=DATAS.SKU_NAME AND TK.SKU_ID=DATAS.SKU_ID;<br>    PKG_PART_UTIL.P_INSERT_HIS(SEQ_OWNID.NEXTVAL,USERID);<br>    END LOOP;<br>END P_INSERT_JD_PARTS;<br><br></code></pre></td></tr></table></figure>
+<p>我这个存储过程首先是for in 循环取出数据并且赋值给DATAS 然后再把每个数据插入到表TT_PART_DEFINE,LOOP开始循环 END LOOP 结束循环.<br>PKG_PART_UTIL.P_INSERT_HIS(SEQ_OWNID.NEXTVAL,USERID);这一行是调用另一个别人写好的存储过程,调用方式是 包.存储过程然后传入参数.<br>给存储过程传参在as前 定义变量在as后.<br>TT_PART_DEFINE的PART_ID是必须字段,所以我们插入的时候要插入id进去,那怎么插入不重复的id呢.我首先想到的是用max(PART_ID),但是不行,这里不允许使用组函数.所以使用SEQ_OWNID.NEXTVAL获取id  SEQ_OWNID是自己写的序列,有最小值最大值,增量等.调用NEXTVAL取下一个.<br>语句结束需要;</p>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>declare 就是用来定义变量用的.<br>另外还有很多语句可以使用,如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace procedure test_p is<br>begin<br>  if 1=2 then<br>  null;<br>else if 2 = 3 then<br>  null;<br>  end if;<br>end if;<br><br>end test_p;<br></code></pre></td></tr></table></figure>
+<p>还要commit  exception Rollback等等 </p>
+
+      </section>
+      <section class="extra">
+        
+          <ul class="copyright">
+  
+    <li><strong>本文作者：</strong>hao Zhou</li>
+    <li><strong>本文链接：</strong><a href="http://example.com/2022/01/20/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/index.html" title="http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;01&#x2F;20&#x2F;%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B&#x2F;index.html">http:&#x2F;&#x2F;example.com&#x2F;2022&#x2F;01&#x2F;20&#x2F;%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B&#x2F;index.html</a></li>
+    <li><strong>版权声明：</strong>本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" title="BY-NC-SA" target="_blank" rel="noopener">BY-NC-SA</a> 许可协议，转载请注明出处！</li>
+  
+</ul>
+        
+        
+          <section class="donate">
+  <div id="qrcode-donate">
+    <img   class="lazyload" data-original="/images/icons/zfb.jpg" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==" >
+  </div>
+  <div class="icon">
+    <a href="javascript:;" id="alipay"><i class="iconfont iconalipay"></i></a>
+    <a href="javascript:;" id="wechat"><i class="iconfont iconwechat-fill"></i></a>
+  </div>
+</section>
+        
+        
+        
+  <nav class="nav">
+    <a></a>
+    <a href="/2022/01/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4/">微服务如何防止多次提交 study<i class="iconfont iconright"></i></a>
+  </nav>
+
+      </section>
+      
+        <section class="comments">
+  
+    <div class="btn" id="comments-btn">查看评论</div>
+  
+  
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<div id="gitalk" class="gitalk"></div>
+<script defer src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+  window.onload = function () {
+    var gitalk = new Gitalk({
+      clientID: '04eb1474b835feb3a8f9',
+      clientSecret: 'cc6f028f3ecfc162121fdf622b8a39dd6507c19d',
+      id: window.location.pathname,
+      repo: 'zh-space',
+      owner: 'zh-space',
+      admin: 'zh-space'
+    });
+    if ( true ) {
+      $("#comments-btn").on("click", function () {
+        $(this).hide();
+        gitalk.render('gitalk');
+      });
+    } else {
+      gitalk.render('gitalk');
+    }
+  }
+</script>
+
+</section>
+      
+    </section>
+  </div>
+</article></div>
+      <div class="col-xl-3">
+        
+          
+  <aside class="toc-wrap">
+    <h3 class="toc-title">文章目录：</h3>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E7%94%A8%E5%8F%8B%E5%AE%9E%E4%B9%A0%E7%9A%84%E6%97%B6%E5%80%99%E5%81%9A%E4%B8%80%E4%B8%AA-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%8A%A0%E5%B7%A5%E7%94%A8%E5%93%81%E4%BF%A1%E6%81%AF-%E7%9A%84%E5%8A%9F%E8%83%BD%EF%BC%8C%E9%9C%80%E8%A6%81%E6%AF%8F%E9%9A%94%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%B0%B1%E6%89%A7%E8%A1%8Csql%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%8C%E9%82%A3%E4%B9%88%E8%BF%99%E4%B8%AAsql%E8%AF%AD%E5%8F%A5%E6%80%8E%E4%B9%88%E5%86%99%E5%91%A2%E3%80%82%E8%BF%99%E5%B0%B1%E8%A6%81%E7%94%A8%E5%88%B0%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%BA%86%E3%80%82"><span class="toc-text">在用友实习的时候做一个 定时任务加工用品信息 的功能，需要每隔一段时间就执行sql更新数据库，那么这个sql语句怎么写呢。这就要用到存储过程了。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">存储过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%B8%80%EF%BC%9A%E6%97%A0%E5%8F%82%E6%97%A0%E8%BF%94"><span class="toc-text">示例一：无参无返</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%BA%8C%EF%BC%9A%E6%9C%89%E5%8F%82%E6%9C%89%E8%BF%94"><span class="toc-text">示例二：有参有返</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%9B%9B%EF%BC%9A%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%E4%B8%AD%E6%9C%89in-out%E5%8F%82%E6%95%B0"><span class="toc-text">示例四：参数列表中有in out参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E5%9B%9B%EF%BC%9A%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E4%B8%AD%E5%AE%9A%E4%B9%89%E5%8F%82%E6%95%B0"><span class="toc-text">示例四：存储过程中定义参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%AD%98%E5%82%A8"><span class="toc-text">函数存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%8D%E7%9C%8B%E7%9C%8B%E6%88%91%E5%86%99%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="toc-text">再看看我写的存储过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-text">补充</span></a></li></ol></li></ol>
+  </aside>
+
+        
+      </div>
+    </div>
+  </div>
+</main>
+  
+
+<footer class="footer">
+  <div class="footer-social"><a 
+        href="tencent://message/?Menu=yes&uin=1505075162 "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#12B7F5'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconQQ "></i>
+      </a><a 
+        href="javascript:; "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#09BB07'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconwechat-fill "></i>
+      </a><a 
+        href="https://www.instagram.com/izhaoo/ "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#DA2E76'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconinstagram "></i>
+      </a><a 
+        href="https://github.com/zh-space "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color= '#9f7be1'" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  icongithub-fill "></i>
+      </a><a 
+        href="mailto:1505075162@qq.com "
+        target="_blank"
+        class="footer-social-item"
+        onMouseOver="this.style.color=#FF3B00" 
+        onMouseOut="this.style.color='#33333D'">
+          <i class="iconfont  iconmail"></i>
+      </a></div>
+  
+    <div class="footer-copyright"><p>Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  z-space</p></div>
+  
+</footer>
+  
+      <div class="fab fab-plus">
+    <i class="iconfont iconplus"></i>
+  </div>
+  
+    <div class="fab fab-daovoice">
+      <i class="iconfont iconcomment"></i>
+    </div>
+  
+  
+    <a href="https://support.qq.com/product/339571" target="_blank">
+      <div class="fab fab-tencent-chao">
+        <i class="iconfont iconcomment"></i>
+      </div>
+    </a>
+  
+  <div class="fab fab-up">
+    <i class="iconfont iconcaret-up"></i>
+  </div>
+  
+  
+  
+    
+<script src="/js/color-mode.js"></script>
+
+  
+  
+</body>
+
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+
+
+
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+
+
+
+
+
+  
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+
+
+
+
+<script src="/js/utils.js"></script>
+<script src="/js/script.js"></script>
+
+
+
+  <script>
+  $.getScript("//cdn.jsdelivr.net/npm/leancloud-storage@4.1.0/dist/av-min.js", () => {
+
+    AV.init({
+      appId: 'V3lQcVtqFjBNGSk82WE6t0eg-gzGzoHsz',
+      appKey: 'Vv48C39AQLdubOy8CDv8NxP7',
+      serverURLs: 'https://leancloud.cn/',
+    });
+
+    const showCount = (Counter) => {
+      const asyncLimit = new AsyncLimit(2);
+      $(".leancloud").each(async (e) => {
+        const url = $(".leancloud").eq(e).attr('id').trim();
+        const query = new AV.Query("Counter");
+        query.equalTo("words", url);
+        let count = await asyncLimit.run(() => query.count());
+        $(".leancloud").eq(e).text(count ? count : '--');
+      });
+    }
+
+    const addCount = (Counter) => {
+      const url = $(".leancloud").length === 1 ? $(".leancloud").attr('id').trim() : 'http://example.com';
+      var query = new Counter;
+      query.save({
+        words: url
+      });
+    }
+
+    $(function () {
+      const Counter = AV.Object.extend("Counter");
+      addCount(Counter);
+      showCount(Counter);
+    });
+
+  });
+</script>
+
+
+
+  
+
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i["DaoVoiceObject"] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    a.charset = "utf-8";
+    m.parentNode.insertBefore(a, m)
+  })(window, document, "script", "https://widget.daovoice.io/widget/0f81ff2f.js", "daovoice")
+  daovoice('init', {
+    app_id: "f92068f6"
+  }, {
+    launcher: {
+      disableLauncherIcon: true,
+    },
+  });
+  daovoice('update');
+</script>
+
+
+
+  <script>
+    (function () {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
