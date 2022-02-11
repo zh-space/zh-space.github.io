@@ -197,7 +197,7 @@
           <i class="iconfont iconeye"></i><span id="/2022/01/20/%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/" class="leancloud" data-flag-title="存储过程 study"></span>
         </span>
       
-      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4187</span>
+      <span class="post-info-item"><i class="iconfont iconfont-size"></i>4545</span>
     </div>
   </div>
 </section>
@@ -215,6 +215,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace procedure p2<br>(name in varchar2,age int,msg out varchar2)<br>--参数列表中，声明变量类型时切记不能写大小，只写类型名即可，例如参数列表中的name变量的声明<br>--参数列表中，输入参数用in表示，输出参数用out表示，不写时默认为输入参数。<br>------------输入参数不能携带值出去，输出参数不能携带值进来，当既想携带值进来，又想携带值出去，可以用in out<br>as<br>begin<br>  msg:=&#x27;姓名&#x27;;<br>  --赋值时除了可以使用：=，还可以用into来实现<br>  --上面子句等价于select &#x27;姓名&#x27;||name||&#x27;,年龄&#x27;||age into msg from dual;<br>end;<br>--执行存储过程<br>declare<br>  msg varchar2(100);<br>begin<br>  p2(&#x27;张三&#x27;,23,msg);<br>  dbms_output.put_line(msg);<br>end;<br></code></pre></td></tr></table></figure>
 <p>另外还有很多语句可以使用,如:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">create or replace procedure test_p is<br>begin<br>  if 1=2 then<br>  null;<br>else if 2 = 3 then<br>  null;<br>  end if;<br>end if;<br><br>end test_p;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">CREATE OR REPLACE PROCEDURE GIAO<br>(i in NUMBER)<br>as<br>BEGIN<br>  for datas in(<br>    select * from Z_H)LOOP<br>    BEGIN<br>      IF i&lt;= 2 then<br>      UPDATE Z_H T SET T.NAME=&#x27;小于2&#x27;;<br>      else<br>      UPDATE Z_H T SET T.NAME=&#x27;大于2&#x27;;<br>      end if;<br>      end;<br>      end loop;<br>      end;<br>      <br>      <br>      begin <br>        GIAO(3);<br>        end;<br></code></pre></td></tr></table></figure>
 <p>还有commit  exception Rollback等等 </p>
 
       </section>
@@ -242,7 +243,7 @@
         
         
   <nav class="nav">
-    <a></a>
+    <a href="/2022/02/11/%E5%AD%97%E8%8A%82%E6%B5%81%E5%92%8C%E5%AD%97%E7%AC%A6%E6%B5%81%E7%9A%84%E5%AD%A6%E4%B9%A0/"><i class="iconfont iconleft"></i>字节流和字符流的学习 study</a>
     <a href="/2022/01/18/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%A4%9A%E6%AC%A1%E6%8F%90%E4%BA%A4/">微服务如何防止多次提交 study<i class="iconfont iconright"></i></a>
   </nav>
 
